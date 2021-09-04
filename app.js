@@ -20,6 +20,9 @@ const shopRoutes = require('./routes/shop');
 // body-parser eklentisini tüm sistemde kullanılacak şekilde initialize ediyoruz
 app.use(bodyParser.urlencoded({extended: false}));
 
+// Express static'lerini ekliyoruz.
+app.use(express.static(path.join(pathDir, 'public')));
+
 // Router'ları initialize ediyoruz
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

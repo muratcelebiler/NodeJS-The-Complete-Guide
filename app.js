@@ -1,7 +1,3 @@
-// Http requestlerini karşılayabilmek için bir server oluşturmamız gerekmektedir.
-// Http core modulünü dahil ediyoruz.
-const http = require('http');
-
 // Express kütüphanesini dahil ediyoruz
 const express = require('express');
 
@@ -17,8 +13,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Bir server oluşturuyoruz.
-const server = http.createServer(app);
-
-// Serverımızın çalışacak portunu ayarlıyoruz.
-server.listen(3000);
+// Express de default http modülü yüklü olarak gelmektedir. 
+// Biz Express içerisindeki app.listen() metodu ile aslında http.createServer() methodunu çağırıp server oluşturabiliriz.
+// Detaylar için aşağıdaki url den expressjs'in github reposuna erişerek application.js dosyasındaki listen() methodunu inceleyebiliriz.
+// Repo url: https://github.com/expressjs/express/blob/master/lib/application.js
+app.listen(3000);

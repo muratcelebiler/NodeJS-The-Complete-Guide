@@ -1,0 +1,29 @@
+version: "3.2"
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./.docker/dockerfile
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: > 
+        /bin/sh -c "
+        echo Waiting for mongo service start...;
+        while ! nc -z mongo 27017;
+        do
+          sleep 1;
+        done;
+        npm start"
+    ports:
+      - 1007:3000
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 1008:27017
+    volumes:
+      - ./data:/data/db

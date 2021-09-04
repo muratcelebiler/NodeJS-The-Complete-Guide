@@ -18,6 +18,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(adminRoutes);
 app.use(shopRoutes);
 
+// 404 sayfasını ekliyoruz
+app.use((req, res, next) => {
+    res.status(404).send('<h1>Page Not Found</h1>');
+});
+
 // Express de default http modülü yüklü olarak gelmektedir. 
 // Biz Express içerisindeki app.listen() metodu ile aslında http.createServer() methodunu çağırıp server oluşturabiliriz.
 // Detaylar için aşağıdaki url den expressjs'in github reposuna erişerek application.js dosyasındaki listen() methodunu inceleyebiliriz.

@@ -5,9 +5,11 @@ const express = require('express');
 const app = express();
 
 // Middleware ekliyoruz
-app.use((req, res, next) => {
+// Middleware sadece belli url adreslerine özel çalışabilirler.
+// Örneğin aşağıdaki middleware sadece product endpointine istek atılınca çalışmaktadır.
+app.use('/product', (req, res, next) => {
     // Console log message
-    console.log("Hello, I am middleware");
+    console.log("Hello, I am middleware only product route");
 
     //Bu komutu eklemediğimizde bir sonraki aşamaya geçemiyoruz ve bu middleware içerisinde hapsoluyoruz.
     next();

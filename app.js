@@ -4,6 +4,9 @@ const express = require('express');
 // Body parser eklentisini dahil ediyoruz. Bu eklenti ile gelen requesti parse ediyoruz
 const bodyParser = require('body-parser');
 
+// Nodejs core kütüphanesinden path modülünü dahil ediyoruz
+const path = require("path");
+
 // Express core kısmında bir fonksiyon döndüğü için core kısmını initilaize ediyoruz.
 const app = express();
 
@@ -20,7 +23,7 @@ app.use(shopRoutes);
 
 // 404 sayfasını ekliyoruz
 app.use((req, res, next) => {
-    res.status(404).send('<h1>Page Not Found</h1>');
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 // Express de default http modülü yüklü olarak gelmektedir. 

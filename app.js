@@ -7,22 +7,16 @@ const bodyParser = require('body-parser');
 // Express core kısmında bir fonksiyon döndüğü için core kısmını initilaize ediyoruz.
 const app = express();
 
+// Router'ları dahil ediyoruz
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
 // body-parser eklentisini tüm sistemde kullanılacak şekilde initialize ediyoruz
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}));
 
-// add-product endpointini ekledik
-app.use('/add-product', (req, res, next) => {
-    res.send('<form action="/product" method="post"><input type="text" name="title"><button type="submit">Add Product</button></form>');
-});
-
-// product endpointini ekledik
-app.post('/product', (req, res, next) => {
-    // Console log message
-    console.log(req.body);
-
-    //Bu komutu eklemediğimizde bir sonraki aşamaya geçemiyoruz ve bu middleware içerisinde hapsoluyoruz.
-    next();
-});
+// Router'ları initialize ediyoruz
+app.use(adminRoutes);
+app.use(shopRoutes);
 
 // Express de default http modülü yüklü olarak gelmektedir. 
 // Biz Express içerisindeki app.listen() metodu ile aslında http.createServer() methodunu çağırıp server oluşturabiliriz.

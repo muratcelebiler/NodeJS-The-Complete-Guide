@@ -4,13 +4,16 @@ const express = require('express');
 // Nodejs core kütüphanesinden path modülünü dahil ediyoruz
 const path = require("path");
 
+// Util
+const pathDir = require("../util/path");
+
 // Express içerisindeki router modülünü çağırıyoruz
 const router = express.Router();
 
 // add-product endpointini ekledik
 router.get('/add-product', (req, res, next) => {
     // __dirname bu dosyanın bulunduğu dizini(path) vermektedir
-    res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'));
+    res.sendFile(path.join(pathDir, 'views', 'add-product.html'));
 });
 
 // product endpointini ekledik

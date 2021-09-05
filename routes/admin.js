@@ -1,28 +1,30 @@
 // Express dahil ediyoruz
 const express = require('express');
 
-// Nodejs core kütüphanesinden path modülünü dahil ediyoruz
-const path = require("path");
-
-// Util
-const pathDir = require("../util/path");
-
 // Express içerisindeki router modülünü çağırıyoruz
 const router = express.Router();
 
-// add-product endpointini ekledik
+// Ürünlerin listeleneceği array
+const products = [];
+
+// /admin/add-product => GET
 router.get('/add-product', (req, res, next) => {
-    // __dirname bu dosyanın bulunduğu dizini(path) vermektedir
-    res.sendFile(path.join(pathDir, 'views', 'add-product.html'));
+    res.render('add-product', {
+        pageTitle: 'Add Product',
+        path: '/admin/add-product',
+        formsCSS: true,
+        productCSS: true,
+        activeAddProduct: true
+    });
 });
 
-// product endpointini ekledik
+// /admin/add-product => POST
 router.post('/add-product', (req, res, next) => {
-    // Console log message
-    console.log(req.body);
-
-    res.send('<h1>Add Product POST Method</h1>');
+    products.push({ title: req.body.title });
+    
+    res.redirect('/');
 });
 
 // Export ediyoruz
-module.exports = router;
+exports.routes = router;
+exports.products = products;

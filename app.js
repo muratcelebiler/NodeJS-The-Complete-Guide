@@ -13,6 +13,12 @@ const pathDir = require("./util/path");
 // Express core kısmında bir fonksiyon döndüğü için core kısmını initilaize ediyoruz.
 const app = express();
 
+// View template yapısını dahil ediyoruz. Biz pug kulanıyoruz. Duruma göre ejs, hbs de kullanılabilir.
+app.set('view engine', 'pug');
+
+// View dosyalarının bulunacağı dizini belirliyoruz
+app.set('views', 'views');
+
 // Router'ları dahil ediyoruz
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -24,12 +30,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(pathDir, 'public')));
 
 // Router'ları initialize ediyoruz
-app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);
 
 // 404 sayfasını ekliyoruz
 app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(pathDir, 'views', '404.html'));
+    res.status(404).render('404', {
+        pageTitle: 'Page Not Found',
+        path : '/'
+    });
 });
 
 // Express de default http modülü yüklü olarak gelmektedir. 

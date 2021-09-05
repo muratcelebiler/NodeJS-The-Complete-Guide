@@ -23,6 +23,9 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
+// Controllers
+const errorCotnroller = require('./controllers/error');
+
 // body-parser eklentisini tüm sistemde kullanılacak şekilde initialize ediyoruz
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -34,12 +37,7 @@ app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);
 
 // 404 sayfasını ekliyoruz
-app.use((req, res, next) => {
-    res.status(404).render('404', {
-        pageTitle: 'Page Not Found',
-        path : '/'
-    });
-});
+app.use(errorCotnroller.get404);
 
 // Express de default http modülü yüklü olarak gelmektedir. 
 // Biz Express içerisindeki app.listen() metodu ile aslında http.createServer() methodunu çağırıp server oluşturabiliriz.

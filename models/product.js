@@ -4,7 +4,26 @@ const fs = require('fs');
 // path modülünü dail diyoruz
 const path = require('path');
 
-const products = [];
+// Verilerin ekleneceği dosya
+const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json');
+
+// Ürünleri dosyadan okur
+const getProductsFromFile = (cb) => {
+    // Dosyayı okuyoruz
+    fs.readFile(p, (err, fileContent) => {
+        if(err) {
+            cb([]);
+        } else {
+            // products.json dosyasını silince undefined hatası veriyor. Dosyayı bulamadığı için içinden veri de okuyamıyoruz.            
+            if(fileContent === 'undefined') {
+                cb([]);
+            }
+
+            // Dosyadan dönen dataları okuyoruz
+            cb(JSON.parse(fileContent));
+        }
+    });
+}
 
 // Product classını oluşturuyoruz
 class Product {
@@ -12,21 +31,10 @@ class Product {
         this.title = title;
     }
 
-    // Save product
+    // Ürün kaydetme
     save() {
-        // Verilerin ekleneceği dosya
-        const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json');
-
-        // Dosyayı okuyoruz
-        fs.readFile(p, (err, fileContent) => {
-            let products = [];
-
-            if(!err) {
-                // Öncelikle dosyadaki verileri alıyoruz
-                products = JSON.parse(fileContent);
-            }
-
-            // Form'dan gelen veriyi products dizisine ekliyoruz
+        getProductsFromFile(products => {
+            // Push in products
             products.push(this);
 
             // Dosyaya son verileri yazıdıryoruz
@@ -40,16 +48,7 @@ class Product {
 
     // Get all products
     static fetchAll(cb) {
-        // Verilerin ekleneceği dosya
-        const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json');
-
-        fs.readFile(p, (err, fileContent) => {
-            if(err) {
-                cb(err);
-            }
-
-            return cb(JSON.parse(fileContent));
-        });
+        getProductsFromFile(cb);
     }
 };
 

@@ -1,13 +1,20 @@
-// Express dahil ediyoruz
 const express = require('express');
 
-// Express içerisindeki router modülünü çağırıyoruz
+// Initialize router
 const router = express.Router();
 
-// Controllers
-const productController = require('../controllers/product');
+// Controller
+const shopController = require('../controllers/shop');
 
-router.get('/', productController.getProducts);
+router.get('/', shopController.getIndex);
 
-// Export ediyoruz
+router.get('/products', shopController.getProducts);
+
+router.get('/cart', shopController.getCart);
+
+router.get('/orders', shopController.getOrders);
+
+router.get('/checkout', shopController.getCheckout);
+
+// Export module
 module.exports = router;

@@ -1,21 +1,19 @@
-// Express dahil ediyoruz
 const express = require('express');
 
-// Controllers
-const productController = require('../controllers/product');
-
-// Express içerisindeki router modülünü çağırıyoruz
+// Initialize router
 const router = express.Router();
 
-// Ürünlerin listeleneceği array
-const products = [];
+// Controller
+const adminController = require('../controllers/admin');
 
 // /admin/add-product => GET
-router.get('/add-product', productController.getAddProduct);
+router.get('/add-product', adminController.getAddProduct);
+
+// /admin/products => GET
+router.get('/products', adminController.getProducts);
 
 // /admin/add-product => POST
-router.post('/add-product', productController.postAddProduct);
+router.post('/add-product', adminController.postAddProduct);
 
-// Export ediyoruz
-exports.routes = router;
-exports.products = products;
+// Export module
+module.exports = router;

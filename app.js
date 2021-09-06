@@ -1,46 +1,30 @@
-// Express kütüphanesini dahil ediyoruz
+// Express
 const express = require('express');
-
-// Body parser eklentisini dahil ediyoruz. Bu eklenti ile gelen requesti parse ediyoruz
-const bodyParser = require('body-parser');
-
-// Nodejs core kütüphanesinden path modülünü dahil ediyoruz
-const path = require("path");
-
-// Util
-const pathDir = require("./util/path");
-
-// Express core kısmında bir fonksiyon döndüğü için core kısmını initilaize ediyoruz.
 const app = express();
 
-// View template yapısını dahil ediyoruz. Biz pug kulanıyoruz. Duruma göre ejs, hbs de kullanılabilir.
-app.set('view engine', 'pug');
+// Modules
+const path = require('path');
+const bodyParser = require('body-parser');
 
-// View dosyalarının bulunacağı dizini belirliyoruz
-app.set('views', 'views');
-
-// Router'ları dahil ediyoruz
+// Routes
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 // Controllers
-const errorCotnroller = require('./controllers/error');
+const errorController = require('./controllers/error');
 
-// body-parser eklentisini tüm sistemde kullanılacak şekilde initialize ediyoruz
-app.use(bodyParser.urlencoded({extended: false}));
+// Set view config
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-// Express static'lerini ekliyoruz.
-app.use(express.static(path.join(pathDir, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Router'ları initialize ediyoruz
-app.use('/admin', adminRoutes.routes);
+// Routes
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-// 404 sayfasını ekliyoruz
-app.use(errorCotnroller.get404);
+// Error control
+app.use(errorController.get404);
 
-// Express de default http modülü yüklü olarak gelmektedir. 
-// Biz Express içerisindeki app.listen() metodu ile aslında http.createServer() methodunu çağırıp server oluşturabiliriz.
-// Detaylar için aşağıdaki url den expressjs'in github reposuna erişerek application.js dosyasındaki listen() methodunu inceleyebiliriz.
-// Repo url: https://github.com/expressjs/express/blob/master/lib/application.js
 app.listen(3000);

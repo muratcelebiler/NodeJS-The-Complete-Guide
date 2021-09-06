@@ -1,29 +1,23 @@
 {
-  "name": "nodejs-thecompleteguide",
+  "name": "nodejs-complete-guide",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "pug": "^3.0.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.12"
-  },
+  "description": "Complete Node.js Guide",
+  "main": "app.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "start-server": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-server": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/muratcelebiler/Udemy-NodeJs-TheCompleteGuide.git"
-  },
-  "author": "",
+  "author": "Maximilian Schwarzmüller",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/muratcelebiler/Udemy-NodeJs-TheCompleteGuide/issues"
+  "devDependencies": {
+    "nodemon": "^1.18.3"
   },
-  "homepage": "https://github.com/muratcelebiler/Udemy-NodeJs-TheCompleteGuide#readme"
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "pug": "^2.0.3"
+  }
 }

@@ -21,8 +21,6 @@ exports.postAddProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
 
-  console.log("editMode", editMode);
-
   if (!editMode) {
     return res.redirect('/');
   }
@@ -62,6 +60,12 @@ exports.postEditProduct = (req, res, next) => {
 
   res.redirect('/admin/products');
 }
+
+exports.postDeleteProduct = (req, res, next) => {
+  const productId = req.body.productId;
+  Product.deleteById(productId);
+  res.redirect('/admin/products');
+};
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {

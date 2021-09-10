@@ -60,4 +60,14 @@ module.exports = class Cart {
           });
         });
     }
+
+    static getCart(cb) {
+        fs.readFile(p, (err, fileContent) => {
+            if(err) {
+                cb(null);
+            }
+
+            cb(JSON.parse(fileContent));
+        });
+    }
 }

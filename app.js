@@ -10,18 +10,6 @@ const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
-// Veritabanını kullanmak için projeye dahil ediyoruz
-const db = require('./util/database');
-
-// Test için bir query sorgusu atıyoruz
-db.execute('SELECT * FROM products')
-    .then(result => {
-        console.log('db result: ', result)
-    })
-    .catch(err => {
-        console.log('db error: ', err)
-});
-
 // Controllers
 const errorController = require('./controllers/error');
 

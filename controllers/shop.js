@@ -14,13 +14,15 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.fetchAll()
+  .then(([products]) => {
     res.render('shop/product-list', {
       prods: products,
       pageTitle: 'All Products',
       path: '/products'
     });
-  });
+  })
+  .catch(err => console.log('getProduct db error: ', err));
 };
 
 exports.postCart = ((req, res, next) => {

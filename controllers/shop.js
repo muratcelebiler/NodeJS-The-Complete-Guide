@@ -20,15 +20,15 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-  .then(([products]) => {
-    res.render('shop/product-list', {
-      prods: products,
-      pageTitle: 'All Products',
-      path: '/products'
-    });
-  })
-  .catch(err => console.log('getProducts db error: ', err));
+  Product.findAll()
+    .then(products => {
+      res.render('shop/product-list', {
+        prods: products,
+        pageTitle: 'All Products',
+        path: '/products'
+      });
+    })
+    .catch(error => console.log('getProducts error', error));
 };
 
 exports.postCart = ((req, res, next) => {
@@ -42,13 +42,15 @@ exports.postCart = ((req, res, next) => {
 });
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll(products => {
-    res.render('shop/index', {
-      prods: products,
-      pageTitle: 'Shop',
-      path: '/'
-    });
-  });
+  Product.findAll()
+    .then(products => {
+      res.render('shop/index', {
+        prods: products,
+        pageTitle: 'Shop',
+        path: '/'
+      });
+    })
+    .catch(error => console.log('getIndex error', error));
 };
 
 exports.getCart = (req, res, next) => {

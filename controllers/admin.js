@@ -13,13 +13,14 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(null, title, imageUrl, description, price);
-  
-  product.save()
-  .then(() => {
-    res.redirect('/products');
-  })
-  .catch(err => console.log('postAddProduct db error: ', err));
+
+  Product.create({title, imageUrl, price, description})
+    .then(() => {
+      console.log('Product created');
+
+      res.redirect('/admin/products');
+    })
+    .catch(error => console.log('postAddProduct error', error));
 };
 
 exports.getEditProduct = (req, res, next) => {

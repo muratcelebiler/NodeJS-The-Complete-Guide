@@ -1,5 +1,6 @@
 // Sequelize modülünü dahil ediyoruz
-const Sequelize = require('sequelize');
+// Sequelize bu şekilde süslü parantezler içerisinde çağırmamızın sebebi Vscode id'sinde Sequelize.create gibi methodların gözükmesidir. Bu şekilde çağırmazsak Vscode içerisinde bu methodlar gözükmüyor.
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('app', 'root', 'V4pQNJYuyHeDRAbNuMUjxwqL4raCAVUE', {
     dialect: 'mysql',

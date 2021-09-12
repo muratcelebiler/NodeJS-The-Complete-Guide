@@ -13,6 +13,9 @@ const shopRoutes = require('./routes/shop');
 // Controllers
 const errorController = require('./controllers/error');
 
+// Sequelize
+const sequelize = require('./util/database');
+
 // Set view config
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -27,4 +30,11 @@ app.use(shopRoutes);
 // Error control
 app.use(errorController.get404);
 
-app.listen(3000);
+// Migration
+sequelize.sync()
+    .then(result => {
+        // Sync başarılı olursa app'i ayağa kaldırıyoruz
+        app.listen(3000);
+    }).catch(error => {
+        console.log('Sequelize sync error' + error);
+    });

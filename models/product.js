@@ -1,41 +1,33 @@
-// Veritabanını kullanmak için projeye dahil ediyoruz
-const db = require('../util/database');
+// Sequelize modülünü çağırıyoruz.
+// Modül constant ismini büyük harf ile yazmamızın sebebi modülün bir class veya constructor dönmesidir.
+const Sequelize = require('sequelize');
 
-const fs = require('fs');
+// Sequelize veritabanı bağlantı aracını dahil ediyoruz
+const sequelize = require('../util/database');
 
-const path = require('path');
-
-// Models
-const Cart = require('./cart');
-
-module.exports = class Product {
-  constructor(id, title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
+const Product = sequelize.define('product', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.TEXT,
+    allowNull: false
   }
+});
 
-  save() {
-    return db.execute(
-      'INSERT INTO products (title, price, description, image_url) VALUES (?, ?, ?, ?)',
-      [
-        this.title,
-        this.price,
-        this.description,
-        this.imageUrl
-      ]
-    );
-  }
-
-  static deleteById(id) {}
-
-  static fetchAll() {
-    return db.execute('SELECT * FROM products');
-  }
-
-  static findById(id) {
-    return db.execute('SELECT * FROM products WHERE id = ?', [id]);
-  }
-};
+module.exports = Product;

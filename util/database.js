@@ -1,13 +1,9 @@
-// Veritabanı bağlantısı için mysql2 kütüphanesini çağırıyoruz
-const mysql2 = require('mysql2');
+// Sequelize modülünü dahil ediyoruz
+const Sequelize = require('sequelize');
 
-// Bağlantı için bir pool oluşturuyoruz
-const pool = mysql2.createPool({
-    host: 'database',
-    port: '3306',
-    database: 'app',
-    user: 'root',
-    password: 'V4pQNJYuyHeDRAbNuMUjxwqL4raCAVUE'
+const sequelize = new Sequelize('app', 'root', 'V4pQNJYuyHeDRAbNuMUjxwqL4raCAVUE', {
+    dialect: 'mysql',
+    host: 'localhost'
 });
 
-module.exports = pool.promise();
+module.exports = sequelize;

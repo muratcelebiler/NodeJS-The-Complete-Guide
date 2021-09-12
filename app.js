@@ -27,6 +27,17 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middlewire
+app.use((req, res, next) => {
+    // sequelize sync içerisinde oluşturduğumuz user bilgilerini kullanabilmek için request içerisine inject ediyoruz.
+    User.findByPk(1)
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(error => console.log('Middleware user findByPk error ', error));
+});
+
 // Routes
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -37,6 +48,8 @@ app.use(errorController.get404);
 // Association (relations)
 // constraints true ise forign key oluştururken on update'de otomatik cascade olarak ayarlanır
 Product.belongsTo(User, {constraints: true, onDelete: 'cascade'});
+// Sequelize içerisinde bulunan magic methodları kullanabilmek için iki modelinde bağlantıları eksiksiz yazılmalıdır
+User.hasMany(Product);
 
 // Migration
 // sync({force: true}) bu şekilde yazılırsa mevcut tabloları her defasında drop edip yeniden oluşturur.

@@ -14,7 +14,10 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
 
-  Product.create({title, imageUrl, price, description})
+  // createProduct sequlize tarafında association'a(relationship) bağlı olarak oluşturulan özel methoddur.
+  // Product modeli ile User modeli arasındaki ilişki app.js dosyasında eklendi.
+  // Product.belongsTo(...) ve User.hasMany(...)
+  req.user.createProduct({title, imageUrl, price, description})
     .then(() => {
       console.log('Product created');
 

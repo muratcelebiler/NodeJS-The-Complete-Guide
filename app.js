@@ -43,8 +43,19 @@ Product.belongsTo(User, {constraints: true, onDelete: 'cascade'});
 // Yani data kaybı gerçekleşir. Bu yüzden force opsiyonu asla productionda kullanılmamalıdır!
 sequelize.sync()
     .then(result => {
+        // Burada Laraveldeki seed yapısı gibi seeder ekleyebiliriz.
+        // Örneğin app ayağa kalktıktan sonra bir endpointi test edeceğiz ve bunun için de authencation lazım. Bunun için bir user oluşturabiliriz.
+        return User.findByPk(1);
+    })
+    .then(user => {
+        if(!user) {
+            return User.create({name: 'Test User', email: 'test@test.com'});
+        }
+
+        return user;
+    })
+    .then(user => {
         // Sync başarılı olursa app'i ayağa kaldırıyoruz
         app.listen(3000);
-    }).catch(error => {
-        console.log('Sequelize sync error' + error);
-    });
+    })
+    .catch(error => console.log('Sequelize sync error' + error));

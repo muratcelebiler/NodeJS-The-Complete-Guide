@@ -13,6 +13,10 @@ const shopRoutes = require('./routes/shop');
 // Controllers
 const errorController = require('./controllers/error');
 
+// Models
+const Product = require('./models/product');
+const User = require('./models/user');
+
 // Sequelize
 const sequelize = require('./util/database');
 
@@ -30,7 +34,13 @@ app.use(shopRoutes);
 // Error control
 app.use(errorController.get404);
 
+// Association (relations)
+// constraints true ise forign key oluştururken on update'de otomatik cascade olarak ayarlanır
+Product.belongsTo(User, {constraints: true, onDelete: 'cascade'});
+
 // Migration
+// sync({force: true}) bu şekilde yazılırsa mevcut tabloları her defasında drop edip yeniden oluşturur.
+// Yani data kaybı gerçekleşir. Bu yüzden force opsiyonu asla productionda kullanılmamalıdır!
 sequelize.sync()
     .then(result => {
         // Sync başarılı olursa app'i ayağa kaldırıyoruz

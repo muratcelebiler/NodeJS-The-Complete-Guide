@@ -16,6 +16,8 @@ const errorController = require('./controllers/error');
 // Models
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 // Sequelize
 const sequelize = require('./util/database');
@@ -50,6 +52,13 @@ app.use(errorController.get404);
 Product.belongsTo(User, {constraints: true, onDelete: 'cascade'});
 // Sequelize içerisinde bulunan magic methodları kullanabilmek için iki modelinde bağlantıları eksiksiz yazılmalıdır
 User.hasMany(Product);
+// Her kullanıcı bir sepete sahiptir. Diğer bir değişle her sepetin bir user'ı vardır.
+User.hasOne(Cart);
+// Sepetlerin içerisinde ürünler vardır. Dolayısıyla her sepet birden fazla ürüne sahip olabilir.
+Cart.belongsToMany(Product, {through: CartItem});
+// Belli bir ürünün birden fazla sepette olabilir. Örneği X ürünü 4 farklı kişinin sahip oldukları sepetlerde olabilir.
+Product.belongsToMany(Cart, {through: CartItem});
+
 
 // Migration
 // sync({force: true}) bu şekilde yazılırsa mevcut tabloları her defasında drop edip yeniden oluşturur.

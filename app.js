@@ -77,6 +77,10 @@ sequelize.sync()
         return user;
     })
     .then(user => {
+        // User için bir tane sepet oluşturuyoruz. Bu işlemi burada yapmamızın sebebi uygulama ilk açıldığında verilerin hazır olması. Aslında uygulamada Sepete Ekle butonuna basınca işlem yapılmalı.
+        return user.createCart();
+    })
+    .then(cart => {
         // Sync başarılı olursa app'i ayağa kaldırıyoruz
         app.listen(3000);
     })

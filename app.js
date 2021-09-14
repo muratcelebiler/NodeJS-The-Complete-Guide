@@ -21,6 +21,8 @@ const CartItem = require('./models/cart-item');
 
 // Sequelize
 const sequelize = require('./util/database');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 // Set view config
 app.set('view engine', 'ejs');
@@ -58,12 +60,18 @@ User.hasOne(Cart);
 Cart.belongsToMany(Product, {through: CartItem});
 // Belli bir ürünün birden fazla sepette olabilir. Örneği X ürünü 4 farklı kişinin sahip oldukları sepetlerde olabilir.
 Product.belongsToMany(Cart, {through: CartItem});
+// Her kullanıcı birden fazla siparişe sahip olabilir.
+User.hasMany(Order);
+// Bir sipariş sadece bir kişiye ait olabilir.
+Order.belongsTo(User);
+// Bir siparişte birden fazla ürün olabilir.
+Order.belongsToMany(Product, {through: OrderItem});
 
 
 // Migration
 // sync({force: true}) bu şekilde yazılırsa mevcut tabloları her defasında drop edip yeniden oluşturur.
 // Yani data kaybı gerçekleşir. Bu yüzden force opsiyonu asla productionda kullanılmamalıdır!
-sequelize.sync()
+sequelize.sync({force: true})
     .then(result => {
         // Burada Laraveldeki seed yapısı gibi seeder ekleyebiliriz.
         // Örneğin app ayağa kalktıktan sonra bir endpointi test edeceğiz ve bunun için de authencation lazım. Bunun için bir user oluşturabiliriz.

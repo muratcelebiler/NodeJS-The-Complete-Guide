@@ -134,3 +134,26 @@ exports.postCartDeleteProduct = (req, res, next) => {
   })
   .catch(error => console.log('postCartDeleteProduct error', error));
 };
+
+exports.postCreateOrder = (req, res, next) => {
+  req.user
+    .getCart()
+    .then(cart => {
+      return cart.getProducts();
+    })
+    .then(products => {
+      return req.user
+        .createOrder()
+        .then(order => {
+          return order.addProducts(products.map(product => {
+            product.orderItem = {quantity: product.cartItem.quantity};
+            return product; 
+          }))
+          .then(result => {
+            res.redirect('/orders');
+          });
+        })
+        .catch(error => console.log('postCreateOrder -> createOrder error', error));
+    })
+    .catch(error => console.log('postCreateOrder error', error));
+};

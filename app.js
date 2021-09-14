@@ -71,7 +71,7 @@ Order.belongsToMany(Product, {through: OrderItem});
 // Migration
 // sync({force: true}) bu şekilde yazılırsa mevcut tabloları her defasında drop edip yeniden oluşturur.
 // Yani data kaybı gerçekleşir. Bu yüzden force opsiyonu asla productionda kullanılmamalıdır!
-sequelize.sync({force: true})
+sequelize.sync()
     .then(result => {
         // Burada Laraveldeki seed yapısı gibi seeder ekleyebiliriz.
         // Örneğin app ayağa kalktıktan sonra bir endpointi test edeceğiz ve bunun için de authencation lazım. Bunun için bir user oluşturabiliriz.

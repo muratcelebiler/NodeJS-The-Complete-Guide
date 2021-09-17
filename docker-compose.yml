@@ -25,6 +25,13 @@ services:
         - 'MYSQL_DATABASE=app'
     ports:
       - '7006:3306'
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb:/data/db
 networks:
   nodejs-the-complete-guide:
     external: true

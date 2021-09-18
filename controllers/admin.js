@@ -1,3 +1,6 @@
+// Product modelini(schema) dahil ediyoruz
+const Product = require('../models/product');
+
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
@@ -12,7 +15,16 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
 
-  res.redirect('/admin/products');
+  // Model'den dönen değer ile bir class oluşturuyoruz
+  const product = new Product({title, imageUrl, price, description});
+
+  // Ürünü kaydediyoruz
+  product
+    .save()
+    .then(product => {
+      res.redirect('/admin/products');
+    })
+    .catch(error => console.log('postAddProduct ', error));
 };
 
 exports.getEditProduct = (req, res, next) => {

@@ -32,7 +32,7 @@ app.use(errorController.get404);
 
 // Mongodb connection
 mongoose
-    .connect('mongodb://mongo:27017')
+    .connect('mongodb://mongo:27017/shop')
     .then(function (connection) {
         console.log('Connected to MongoDB');
         app.listen(3000);

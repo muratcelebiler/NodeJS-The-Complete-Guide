@@ -36,12 +36,17 @@ exports.getEditProduct = (req, res, next) => {
 
   const prodId = req.params.productId;
 
-  res.render('admin/edit-product', {
-    pageTitle: 'Edit Product',
-    path: '/admin/edit-product',
-    editing: editMode,
-    product: product
-  });
+  Product
+    .findById(prodId)
+    .then(product => {
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode,
+        product: product
+      });
+    })
+    .catch(error => console.log('postAddProduct ', error));
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -51,7 +56,17 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  res.redirect('/admin/products');
+  Product
+    .findByIdAndUpdate(prodId, {
+      title: updatedTitle,
+      description: updatedDesc,
+      price: updatedPrice,
+      imageUrl: updatedImageUrl
+    })
+    .then(product => {
+      res.redirect('/admin/products');
+    })
+    .catch(error => console.log('postAddProduct ', error));
 }
 
 exports.postDeleteProduct = (req, res, next) => {

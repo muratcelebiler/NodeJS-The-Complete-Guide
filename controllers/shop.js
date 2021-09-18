@@ -1,3 +1,6 @@
+// Product modelini dahil ediyoruz
+const Product = require('../models/product');
+
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
 
@@ -9,11 +12,16 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  res.render('shop/product-list', {
-    prods: products,
-    pageTitle: 'All Products',
-    path: '/products'
-  });
+  Product
+    .find()
+    .then(products => {
+      res.render('shop/product-list', {
+        prods: products,
+        pageTitle: 'All Products',
+        path: '/products'
+      });
+    })
+    .catch(error => console.log(error));
 };
 
 exports.postCart = ((req, res, next) => {

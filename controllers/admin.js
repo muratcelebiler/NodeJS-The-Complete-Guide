@@ -62,9 +62,14 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  res.render('admin/products', {
-    prods: products,
-    pageTitle: 'Admin Products',
-    path: '/admin/products'
-  });
+  Product
+    .find()
+    .then(products => {
+      res.render('admin/products', {
+        prods: products,
+        pageTitle: 'Admin Products',
+        path: '/admin/products'
+      });
+    })
+    .catch(error => console.log(error));
 };

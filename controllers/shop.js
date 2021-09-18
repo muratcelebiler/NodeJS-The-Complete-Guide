@@ -4,11 +4,16 @@ const Product = require('../models/product');
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
 
-  res.render('shop/product-detail', {
-    product: product,
-    pageTitle: product.title,
-    path: '/products'
-  });
+  Product
+    .findById(productId)
+    .then(product => {
+      res.render('shop/product-detail', {
+        product: product,
+        pageTitle: product.title,
+        path: '/products'
+      });
+    })
+    .catch(error => console.log(error));
 };
 
 exports.getProducts = (req, res, next) => {

@@ -6,6 +6,9 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
+// Mongoose
+const mongoose = require('mongoose');
+
 // Routes
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -27,4 +30,14 @@ app.use(shopRoutes);
 // Error control
 app.use(errorController.get404);
 
-app.listen(3000);
+// Mongodb connection
+mongoose
+    .connect('mongodb://mongo:27017')
+    .then(function (connection) {
+        console.log('Connected to MongoDB');
+        app.listen(3000);
+    })
+    .catch(error => {
+        console.log('Disconnect to MongoDB');
+        console.log(error);
+    })

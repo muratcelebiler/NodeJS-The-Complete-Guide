@@ -32,6 +32,8 @@ services:
       - 27017:27017
     volumes:
       - ./mongodb:/data/db
+    networks: 
+      - nodejs-the-complete-guide
 networks:
   nodejs-the-complete-guide:
     external: true

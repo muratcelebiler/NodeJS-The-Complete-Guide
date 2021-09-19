@@ -33,48 +33,14 @@ exports.postCart = ((req, res, next) => {
   // Request'ten gelen productId değeri
   const productId = req.body.productId;
 
-  // Promise yapısında then() blokları arasında data aktarımı için promise dışında bir variable tanımlanabilir.
-  let fetchedCart;
-
-  // Varsayılan adet sayısı
-  let newQuantity = 1;
-
-  // İlk olarak kullanıcının sepetini(cart) tespit ediyoruz.
-  req.user
-    .getCart()
-    .then(cart => {
-      // Bulunan sepeti etkilenen sepet olarak ekliyoruz
-      fetchedCart = cart;
-
-      // Sepetin içerisinde requestten gelen productId değerini taşıyan ürünleri tespit ediyoruz. Örneğin aynı X ürününden 3 tane var gibi...
-      return cart.getProducts({where: {id: productId}});
-    })
-    .then(products => {
-      // Sepette aradığımız ürünler mevcut mu?
-      if(products.length > 0) {
-        // Aynı üründen birden fazla olabileceği için ilkini çekiyoruz
-        product = products.pop();
-        
-        if(product) {
-          // İlk adım olarak sepette bulunan ürünün adetini buluyoruz
-          const oldQuantity = product.cartItem.quantity;
-          // Adet sayısını güncelliyoruz
-          newQuantity += oldQuantity;
-          
-          return product;
-        }
-      }
-
-      // Sepette aradığımız üründen hiç yoksa ürünü buluyoruz ve sepete ekliyoruz.
-      return Product.findByPk(productId);
-    })
+  Product.findById(productId)
     .then(product => {
-        return fetchedCart.addProduct(product, { through: {quantity: newQuantity} });
+      return req.user.addToCart(product);
     })
     .then(result => {
-      return res.redirect('/cart');
+      res.redirect('/cart');
     })
-    .catch(error => console.log('postCart error: ', error));
+    .catch(error => console.log('postCart', error));
 });
 
 exports.getIndex = (req, res, next) => {

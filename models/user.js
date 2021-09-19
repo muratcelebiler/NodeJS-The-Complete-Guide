@@ -23,4 +23,29 @@ const userSchema = new Schema({
     }
 });
 
+// Bu tarz fonksiyonlara utility fonksiyon diyoruz. Laravel'deki macro fonksiyonlar gibi çalışırlar.
+userSchema.methods.addToCart = function (product) {
+    // Product daha önce sepete eklenmiş mi?
+    const cartProductIndex = this.cart.items.findIndex(cp => {
+        return cp.productId.toString() === product._id.toString();
+    });
+
+    // Default quantity
+    let newQuantity = 1;
+
+    // Cart içerisindeki items'ları bir değişkene atıyoruz
+    if(cartProductIndex >= 0) {
+        // Product daha önce sepete eklendiği için adet sayısını arttırıyoruz.
+        this.cart.items[cartProductIndex].quantity += 1;
+    } else {
+        // Product daha önce sepete hiç eklenmemiş.
+        this.cart.items.push({
+            productId: product._id,
+            quantity: newQuantity
+        });
+    }
+
+    return this.save();
+};
+
 module.exports = mongoose.model('User', userSchema);

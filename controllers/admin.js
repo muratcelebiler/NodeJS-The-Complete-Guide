@@ -83,7 +83,9 @@ exports.postDeleteProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   Product
     .find()
+    .populate('userId') // Aralarında ilişki bulunan modelleri response içerisine dahil edebiliriz. Laravel'deli with() methodu gibi
     .then(products => {
+      console.log('products', products);
       res.render('admin/products', {
         prods: products,
         pageTitle: 'Admin Products',

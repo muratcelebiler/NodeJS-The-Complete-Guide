@@ -1,5 +1,6 @@
 // Product modelini dahil ediyoruz
 const Product = require('../models/product');
+const user = require('../models/user');
 
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
@@ -56,17 +57,16 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart()
-    .then(cart => {
-      return cart.getProducts()
-        .then(products => {
-          res.render('shop/cart', {
-            path: '/cart',
-            pageTitle: 'Your Cart',
-            products: products
-          });
-        })
-        .catch(error => console.log('getCart > getProducts error', error));
+  req.user
+    .populate('cart.items.productId')
+    .then(user => {
+      const products = user.cart.items;
+
+      res.render('shop/cart', {
+        path: '/cart',
+        pageTitle: 'Your Cart',
+        products: products
+      });
     })
     .catch(error => console.log('getCart error', error));
 };

@@ -93,20 +93,13 @@ exports.getCheckout = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const productId = req.body.productId;
-
+  
   req.user
-  .getCart()
-  .then(cart => {
-    return cart.getProducts({ where: {id: productId} });
-  })
-  .then(products => {
-    const product = products.pop();
-    return product.cartItem.destroy();
-  })
-  .then(result => {
-    res.redirect('/cart');
-  })
-  .catch(error => console.log('postCartDeleteProduct error', error));
+    .removeFromCart(productId)
+    .then(result => {
+      res.redirect('/cart');
+    })
+    .catch(error => console.log('postCartDeleteProduct error', error));
 };
 
 exports.postCreateOrder = (req, res, next) => {

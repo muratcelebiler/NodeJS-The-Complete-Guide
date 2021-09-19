@@ -1,6 +1,5 @@
 // Product modelini dahil ediyoruz
 const Product = require('../models/product');
-const user = require('../models/user');
 const Order = require('../models/order');
 
 exports.getProduct = (req, res, next) => {
@@ -73,8 +72,8 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user
-    .getOrders({include: ['products']})
+  Order
+    .find({'user.id': req.user._id})
     .then(orders => {
       return res.render('shop/orders', {
         path: '/orders',

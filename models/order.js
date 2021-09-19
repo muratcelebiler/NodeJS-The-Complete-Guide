@@ -12,7 +12,8 @@ const orderSchema = new Schema({
     user: {
         id: {
             type: Schema.Types.ObjectId,
-            required: true
+            required: true,
+            ref: 'User'
         },
         name: {
             type: String,

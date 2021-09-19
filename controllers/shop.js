@@ -122,6 +122,9 @@ exports.postCreateOrder = (req, res, next) => {
       return order.save();
     })
     .then(result => {
+      return req.user.clearFromCart();
+    })
+    .then(result => {
       res.redirect('/orders');
     })
     .catch(error => console.log('postCreateOrder error', error));

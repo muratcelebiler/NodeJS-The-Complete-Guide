@@ -1,6 +1,7 @@
 // Product modelini dahil ediyoruz
 const Product = require('../models/product');
 const user = require('../models/user');
+const Order = require('../models/order');
 
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
@@ -103,29 +104,25 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postCreateOrder = (req, res, next) => {
-  let fetchedCart;
   req.user
-    .getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts();
+    .populate('cart.items.productId')
+    .then(user => {
+      const products = user.cart.items.map(item => {
+        return {
+          product: item.productId._doc,
+          quantity: item.quantity
+        }
+      });
+
+      const order = new Order({
+        products: products,
+        user: {name: req.user.name, id: req.user}
+      });
+
+      return order.save();
     })
-    .then(products => {
-      return req.user
-        .createOrder()
-        .then(order => {
-          return order.addProducts(products.map(product => {
-            product.orderItem = {quantity: product.cartItem.quantity};
-            return product; 
-          }))
-          .then(result => {
-            return fetchedCart.setProducts(null);
-          })
-          .then(result => {
-            res.redirect('/orders');
-          });
-        })
-        .catch(error => console.log('postCreateOrder -> createOrder error', error));
+    .then(result => {
+      res.redirect('/orders');
     })
     .catch(error => console.log('postCreateOrder error', error));
 };

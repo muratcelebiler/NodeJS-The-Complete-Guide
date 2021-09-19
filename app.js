@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 // Mongoose
 const mongoose = require('mongoose');
 
+// Models
+const User = require('./models/user');
+
 // Routes
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -23,6 +26,17 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middlewares
+app.use((req, res, next) => {
+    User
+        .findOne()
+        .then((user) => {
+            req.user = user;
+            next();
+        })
+        .catch(error => console.log('Middleware error', error));
+});
+
 // Routes
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -34,7 +48,24 @@ app.use(errorController.get404);
 mongoose
     .connect('mongodb://mongo:27017/shop')
     .then(function (connection) {
-        console.log('Connected to MongoDB');
+        console.log('Connected mongo db');
+
+        User
+            .findOne()
+            .then(user => {
+                if(!user) {
+                    const user = new User({
+                        name: 'Max',
+                        email: 'max@max.com',
+                        cart: {
+                            items: []
+                        }
+                    });
+                    user.save();
+                }
+            })
+            .catch(error => console.log('app.js mongodb connection ', error))
+
         app.listen(3000);
     })
     .catch(error => {

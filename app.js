@@ -5,4 +5,4 @@ const express = require('express');
 const app = express();
 
 // Server configuration added
-app.listen(3001);
+app.listen(3000);

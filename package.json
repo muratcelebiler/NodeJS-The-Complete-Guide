@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-thecompleteguide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muratcelebiler/NodeJs-The-Complete-Guide.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muratcelebiler/NodeJs-The-Complete-Guide/issues"
+  },
+  "homepage": "https://github.com/muratcelebiler/NodeJs-The-Complete-Guide#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

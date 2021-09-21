@@ -10,6 +10,9 @@ const app = express();
 // Routes
 const userRoutes = require('./routes/userRoutes');
 
+// Models
+const User = require('./models/User');
+
 // Initialize routes
 app.use('/user', userRoutes);
 

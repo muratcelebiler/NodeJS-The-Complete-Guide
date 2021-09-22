@@ -1,6 +1,9 @@
 // Include express
 const express = require('express');
 
+// Body parser added for resolve incoming request
+const bodyParser = require('body-parser');
+
 // Import sequelize
 const sequelize = require('./util/database');
 
@@ -12,6 +15,9 @@ const userRoutes = require('./routes/userRoutes');
 
 // Models
 const User = require('./models/User');
+
+// Will handle text/plain requests
+app.use(bodyParser.json());
 
 // Initialize routes
 app.use('/user', userRoutes);
